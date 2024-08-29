@@ -8,13 +8,14 @@ CREATE TABLE IF NOT EXISTS customers (
 CREATE TYPE measure_type_enum AS ENUM ('W', 'G');
 
 CREATE TABLE IF NOT EXISTS measures (
-    measure_uuid VARCHAR(255) NOT NULL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    measure_uuid VARCHAR(255) NOT NULL,
     customer_code INT,
     measure_datetime TIMESTAMP,
     measure_type measure_type_enum,
     measure_value INT,
     has_confirmed BOOLEAN,
-    image_url VARCHAR(255),
+    image_url TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_code) REFERENCES customers(customer_code)
 );
