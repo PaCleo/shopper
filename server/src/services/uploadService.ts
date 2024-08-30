@@ -5,6 +5,27 @@ export const validateBase64Image = (base64Image: string): boolean => {
     return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(base64Data);
 };
 
+export const customerCode = async (customers_code: string): Promise<boolean> => {
+    const query = `
+        SELECT * FROM customers
+        WHERE customer_code = $1`
+
+    const result = await pool.query(query, [customers_code]);
+    if (result.rows.length > 0) {
+        return customers_code === result.rows[0].customer_code;
+    }
+    return false;
+}
+
+export const measureDatetime = (measure_datetime: Date): boolean => {
+    const parsedDate = new Date(measure_datetime);
+    if (!isNaN(parsedDate.getTime())) {
+        return true;
+    }
+
+    return false
+}
+
 export const checkMontlhyReading = async (customers_code:string, measure_datetime: Date, measure_type: string): Promise<boolean> => {
     const startOfMonth = new Date(measure_datetime);
     startOfMonth.setDate(1);
