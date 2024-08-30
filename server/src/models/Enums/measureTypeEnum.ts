@@ -1,4 +1,4 @@
-export enum measureType {
-    W = 'Water',
-    G = 'Gas'
+export enum measureTypeEnum {
+    WATER = 'W',
+    GAS = 'G'
 }

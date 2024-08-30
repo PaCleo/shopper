@@ -11,8 +11,8 @@ services:
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     volumes:
-      #- ./server:/server
       - server-shopper-node-modules:/server/node_modules
+      - ./server/leo.json:/server/leo.json
     depends_on:
       database:
         condition: service_healthy

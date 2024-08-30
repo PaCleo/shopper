@@ -1,25 +1,26 @@
-import pg from 'pg'
+import  express from 'express';
+import bodyParser from 'body-parser';
+import { pool } from './services/database.js';
+import router from './routes/routes.js';
 
-const pool = new pg.Pool({
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT, 10) : undefined,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DB
-});
+const app = express()
 
+app.use(bodyParser.json())
+app.use('/', router)
 async function main() {
-    const client = await pool.connect();
     try {
-        const result = await client.query('SELECT * FROM customers;');
-        console.log(result.rows);
-    } catch (err) {
-        console.error(err);
-    } finally {
+        const client = await pool.connect();
         client.release();
+        
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (err) {
+        console.error('Error connecting to database', err);
     }
 }
 
 main()
     .then(() => console.log('Server started.'))
-    .catch(err => console.error('Error connecting to database', err));
+    .catch(err => console.error('Error starting server', err));
