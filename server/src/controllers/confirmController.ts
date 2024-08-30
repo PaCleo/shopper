@@ -17,8 +17,9 @@ export const confirmController = async (req: Request, res: Response) => {
             error_descriptions: 'Os dados fornecidos são inválidos',
         });
     }
+    
     const measure = await findMeasure(measure_uuid)
-    console.log(measure);
+
     if (!measure) {
         return res.status(404).json({
             error_code: 'MEASURE_NOT_FOUND',
